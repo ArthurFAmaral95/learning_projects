@@ -26,14 +26,13 @@ p {
 }
 
 #loading {
-  border: solid lightgray 0.8rem;
+  border: solid white 0.8rem;
   border-left: blue solid 0.8rem;
-  border-top:  blue solid 0.8rem;;
   width: 2rem;
   height: 2rem;
   padding: 1.5rem;
   border-radius: 50%;
-  animation: rotate 600ms infinite linear;
+  animation: rotate 1000ms infinite linear;
 }
 
 @keyframes rotate {
