@@ -38,7 +38,7 @@ function calculator() {
     } else if (e.target.textContent === "=" && operator == "/") {
       numbers.push(pressedKeys.slice(0, pressedKeys.length - 1));
       const result = Number(numbers[0]) / Number(numbers[1]);
-      display.textContent = result;
+      display.textContent = result.toFixed(2);
     } 
   })  
 }
