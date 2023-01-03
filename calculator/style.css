@@ -1,3 +1,5 @@
+/* Basic setup*/
+
 * {
   padding: 0;
   margin: 0;
@@ -17,6 +19,8 @@ body {
   flex-direction: column;
   align-items: center;
 }
+
+/*Keys layout*/
 
 #display {
   height: 20vh;
@@ -47,6 +51,8 @@ body {
   background-color: lightgrey;
 }
 
+/*Keys colors*/
+
 #keys div.result {
   flex: 2;
   background-color: orange;
@@ -58,4 +64,13 @@ body {
 
 #keys div.clear {
   background-color: lightcoral;
+}
+
+/*Display*/
+
+#display p {
+  height: 100%;
+  font-size: calc(0.9 * 20vh);
+  padding-inline: 2rem;
+  overflow: scroll;
 }
