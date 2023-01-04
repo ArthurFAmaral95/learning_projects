@@ -5,12 +5,12 @@ const display = document.querySelector('#display p');
 let pressedKeys = [];
 let numbers = [];
 let operator = [];
+let result = 0;
 
-//Function to display typed operation
+//Calculator function
 
 function calculator() {
   keys.addEventListener('click', (e) => {
-    console.log(e.target.textContent);
     pressedKeys += e.target.textContent;
     display.textContent = pressedKeys;
 
@@ -19,31 +19,53 @@ function calculator() {
       operator.push(e.target.textContent);
       pressedKeys = [];
       display.textContent = pressedKeys;
-      console.log(numbers);
-      console.log(operator);
     }
 
-    if (e.target.textContent === "=" && operator == "+") {
+    if (e.target.textContent === "=" && operator[operator.length - 1] == "+" && numbers.length == 1) {
       numbers.push(pressedKeys.slice(0, pressedKeys.length - 1));
-      const result = Number(numbers[0]) + Number(numbers[1]);
+      result += Number(numbers[0]) + Number(numbers[1]);
       display.textContent = result;
-    } else if (e.target.textContent === "=" && operator == "-") {
+      pressedKeys = [];
+    } else if (e.target.textContent === "=" && operator[operator.length - 1] == "+") {
       numbers.push(pressedKeys.slice(0, pressedKeys.length - 1));
-      const result = Number(numbers[0]) - Number(numbers[1]);
+      result += Number(numbers[numbers.length - 1]);
       display.textContent = result;
-    } else if (e.target.textContent === "=" && operator == "x") {
+      pressedKeys = [];
+    } else if (e.target.textContent === "=" && operator[operator.length - 1] == "-" && numbers.length == 1) {
       numbers.push(pressedKeys.slice(0, pressedKeys.length - 1));
-      const result = Number(numbers[0]) * Number(numbers[1]);
+      result += (Number(numbers[0]) - Number(numbers[1]));
       display.textContent = result;
-    } else if (e.target.textContent === "=" && operator == "/") {
+      pressedKeys = [];
+    } else if (e.target.textContent === "=" && operator[operator.length - 1] == "-") {
       numbers.push(pressedKeys.slice(0, pressedKeys.length - 1));
-      const result = Number(numbers[0]) / Number(numbers[1]);
+      result -= Number(numbers[numbers.length - 1]);
+      display.textContent = result;
+      pressedKeys = [];
+    } else if (e.target.textContent === "=" && operator[operator.length - 1] == "x" && numbers.length == 1) {
+      numbers.push(pressedKeys.slice(0, pressedKeys.length - 1));
+      result += (Number(numbers[0]) * Number(numbers[1]));
       display.textContent = result.toFixed(2);
-    } 
+      pressedKeys = [];
+    } else if (e.target.textContent === "=" && operator[operator.length - 1] == "x") {
+      numbers.push(pressedKeys.slice(0, pressedKeys.length - 1));
+      result *= Number(numbers[numbers.length - 1]);
+      display.textContent = result.toFixed(2);
+      pressedKeys = [];
+    } else if (e.target.textContent === "=" && operator[operator.length - 1] == "/"&& numbers.length == 1) {
+      numbers.push(pressedKeys.slice(0, pressedKeys.length - 1));
+      result += (Number(numbers[0]) / Number(numbers[1]));
+      display.textContent = result.toFixed(2);
+      pressedKeys = [];
+    } else if (e.target.textContent === "=" && operator[operator.length - 1] == "/") {
+      numbers.push(pressedKeys.slice(0, pressedKeys.length - 1));
+      result /= Number(numbers[numbers.length - 1]);
+      display.textContent = result.toFixed(2);
+      pressedKeys = [];
+    }
   })  
 }
 
-//Function clear the display
+//Function clear the display and past operations
 
 function clear() {
   keys.addEventListener('click', (e) => {
@@ -52,6 +74,7 @@ function clear() {
       display.textContent = pressedKeys;
       numbers = [];
       operator = [];
+      result = 0;
     }
   })
 }
