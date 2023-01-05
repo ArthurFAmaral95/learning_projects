@@ -30,6 +30,14 @@ keys.addEventListener('click', e => {
       action === 'multiply' ||
       action === 'divide'
     ) {
+      const firstValue = calculator.dataset.firstValue
+      const operator = calculator.dataset.operator
+      const secondValue = displayedNum
+
+      if (firstValue && operator) {
+        display.textContent = calculate(firstValue, operator, secondValue)
+      }
+
       key.classList.add('is-depressed')
       // Add custom attribute
       calculator.dataset.previousKeyType = 'operator'
