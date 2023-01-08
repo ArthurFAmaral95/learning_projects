@@ -51,6 +51,29 @@ class foodSquare extends Square {
   }
 }
 
+class snakeSquare extends Square {
+  size
+  color
+  velX
+  velY
+
+  constructor(x, y, velX, velY) {
+    super(x, y)
+    this.size = 10
+    this.color = 'green'
+    this.velX = velX
+    this.velY = velY
+  }
+
+  draw() {
+    ctx.beginPath()
+    ctx.fillStyle = this.color
+    ctx.fillRect(this.x, this.y, this.size, this.size)
+  }  
+}
+
 const food = new foodSquare(random(0, width - 10), random(0, height - 10))
+const snake = new snakeSquare(250, 250, 0, 0)
 
 food.draw()
+snake.draw()
