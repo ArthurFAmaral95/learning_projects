@@ -7,6 +7,7 @@ const ctx = canvas.getContext('2d')
 const scoreCounter = document.querySelector('header p')
 
 const squareSize = 10
+const fps = 25
 
 // Function to generate random number
 function random(min, max) {
@@ -139,7 +140,10 @@ function loop() {
   snake.draw()
   snake.checkBounds()
   snake.updatePosition()
-  requestAnimationFrame(loop)
+
+  setTimeout(() => {
+    requestAnimationFrame(loop)
+  }, 1000 / fps)
 }
 
 loop()
