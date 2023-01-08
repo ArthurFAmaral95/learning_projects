@@ -50,7 +50,7 @@ class foodSquare extends Square {
   }
 
   collisionDetect() {
-    if (this.exists && this.x === snake.x && this.y === snake.y) {
+    if (this.exists && this.x === snakeHead.x && this.y === snakeHead.y) {
       this.exists = false
       const food = new foodSquare(
         random(0, width - squareSize),
@@ -58,8 +58,15 @@ class foodSquare extends Square {
       )
       food.draw()
       foods.push(food)
-      score ++
+
+      score++
       scoreCounter.textContent = score
+
+      const snakeBody = new snakeSquare(
+        snake[snake.length - 1].x + squareSize,
+        snake[snake.length - 1].y + squareSize
+      )
+      snake.push(snakeBody)
     }
   }
 }
@@ -74,7 +81,7 @@ class snakeSquare extends Square {
     super(x, y)
     this.size = squareSize
     this.color = 'green'
-    this.velX = 0
+    this.velX = 10
     this.velY = 0
 
     window.addEventListener('keydown', e => {
@@ -139,7 +146,9 @@ let foods = [
   new foodSquare(random(0, width - squareSize), random(0, height - squareSize))
 ]
 
-const snake = new snakeSquare(250, 250)
+let snake = []
+const snakeHead = new snakeSquare(250, 250)
+snake.push(snakeHead)
 
 function loop() {
   // Painting the canvas white
@@ -158,9 +167,11 @@ function loop() {
     }
   }
 
-  snake.draw()
-  snake.checkBounds()
-  snake.updatePosition()
+  for (const part of snake) {
+    part.draw()
+    part.checkBounds()
+    part.updatePosition()
+  }
 
   setTimeout(() => {
     requestAnimationFrame(loop)
