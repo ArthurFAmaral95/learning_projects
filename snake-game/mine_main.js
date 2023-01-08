@@ -5,9 +5,10 @@ const height = (canvas.height = 500)
 const ctx = canvas.getContext('2d')
 
 const scoreCounter = document.querySelector('header p')
+let score = 0
 
 const squareSize = 10
-const fps = 25
+const fps = 10
 
 // Function to generate random number
 function random(min, max) {
@@ -46,6 +47,20 @@ class foodSquare extends Square {
     ctx.beginPath()
     ctx.fillStyle = this.color
     ctx.fillRect(this.x, this.y, this.size, this.size)
+  }
+
+  collisionDetect() {
+    if (this.exists && this.x === snake.x && this.y === snake.y) {
+      this.exists = false
+      const food = new foodSquare(
+        random(0, width - squareSize),
+        random(0, height - squareSize)
+      )
+      food.draw()
+      foods.push(food)
+      score ++
+      scoreCounter.textContent = score
+    }
   }
 }
 
@@ -120,10 +135,10 @@ class snakeSquare extends Square {
   }
 }
 
-const food = new foodSquare(
-  random(0, width - squareSize),
-  random(0, height - squareSize)
-)
+let foods = [
+  new foodSquare(random(0, width - squareSize), random(0, height - squareSize))
+]
+
 const snake = new snakeSquare(250, 250)
 
 function loop() {
@@ -136,7 +151,13 @@ function loop() {
   ctx.lineWidth = 5
   ctx.strokeRect(0, 0, width, height)
 
-  food.draw()
+  for (const food of foods) {
+    if (food.exists) {
+      food.draw()
+      food.collisionDetect()
+    }
+  }
+
   snake.draw()
   snake.checkBounds()
   snake.updatePosition()
