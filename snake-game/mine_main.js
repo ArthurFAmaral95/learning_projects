@@ -29,6 +29,29 @@ class Square {
     this.x = x
     this.y = y
   }
+
+  updatePosition() {
+    if (this.x < 0) {
+      this.x = 0
+      this.velX = 0
+      this.velY = 0
+    } else if (this.y < 0) {
+      this.y = 0
+      this.velX = 0
+      this.velY = 0
+    } else if (this.x >= width) {
+      this.x = width - this.size
+      this.velX = 0
+      this.velY = 0
+    } else if (this.y >= height) {
+      this.y = height - this.size
+      this.velX = 0
+      this.velY = 0
+    }
+
+    this.x += this.velX
+    this.y += this.velY
+  }
 }
 
 class foodSquare extends Square {
@@ -62,16 +85,13 @@ class foodSquare extends Square {
       score++
       scoreCounter.textContent = score
 
-      const snakeBody = new snakeSquare(
-        snake[snake.length - 1].x + squareSize,
-        snake[snake.length - 1].y + squareSize
-      )
+      const snakeBody = new snakeBodySquare()
       snake.push(snakeBody)
     }
   }
 }
 
-class snakeSquare extends Square {
+class snakeHeadSquare extends Square {
   size
   color
   velX
@@ -117,28 +137,33 @@ class snakeSquare extends Square {
       console.log('bateu')
     }
   }
+}
 
+class snakeBodySquare extends Square {
+  size
+  color
+  velX
+  velY
+
+  constructor() {
+    super(
+      snake[snake.length - 1].x - snake[snake.length - 1].velX,
+      snake[snake.length - 1].y - snake[snake.length - 1].velY
+    )
+    this.size = squareSize
+    this.color = 'green'
+    this.velX = snake[snake.length - 1].velX
+    this.velY = snake[snake.length - 1].velY
+  }
+
+  draw() {
+    ctx.beginPath()
+    ctx.fillStyle = this.color
+    ctx.fillRect(this.x, this.y, this.size, this.size)
+  }
   updatePosition() {
-    if (this.x < 0) {
-      this.x = 0
-      this.velX = 0
-      this.velY = 0
-    } else if (this.y < 0) {
-      this.y = 0
-      this.velX = 0
-      this.velY = 0
-    } else if (this.x >= width) {
-      this.x = width - this.size
-      this.velX = 0
-      this.velY = 0
-    } else if (this.y >= height) {
-      this.y = height - this.size
-      this.velX = 0
-      this.velY = 0
-    }
-
-    this.x += this.velX
-    this.y += this.velY
+    this.x += snake[snake.length - 1].velX
+    this.y += snake[snake.length - 1].velY
   }
 }
 
@@ -147,7 +172,7 @@ let foods = [
 ]
 
 let snake = []
-const snakeHead = new snakeSquare(250, 250)
+const snakeHead = new snakeHeadSquare(250, 250)
 snake.push(snakeHead)
 
 function loop() {
@@ -169,9 +194,9 @@ function loop() {
 
   for (const part of snake) {
     part.draw()
-    part.checkBounds()
     part.updatePosition()
   }
+  snakeHead.checkBounds()
 
   setTimeout(() => {
     requestAnimationFrame(loop)
@@ -179,3 +204,5 @@ function loop() {
 }
 
 loop()
+
+// fazer com que o corpo da cobra siga a cabeça
