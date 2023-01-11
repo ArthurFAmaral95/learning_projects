@@ -105,23 +105,18 @@ class snakeHeadSquare extends Square {
     this.velY = 0
 
     window.addEventListener('keydown', e => {
-      switch (e.key) {
-        case 'ArrowUp':
-          this.velY = -squareSize
-          this.velX = 0
-          break
-        case 'ArrowDown':
-          this.velY = squareSize
-          this.velX = 0
-          break
-        case 'ArrowLeft':
-          this.velY = 0
-          this.velX = -squareSize
-          break
-        case 'ArrowRight':
-          this.velY = 0
-          this.velX = squareSize
-          break
+      if (e.key === 'ArrowUp' && this.velY != squareSize) {
+        this.velY = -squareSize
+        this.velX = 0
+      } else if (e.key === 'ArrowDown' && this.velY != -squareSize) {
+        this.velY = squareSize
+        this.velX = 0
+      } else if (e.key === 'ArrowLeft' && this.velX != squareSize) {
+        this.velY = 0
+        this.velX = -squareSize
+      } else if (e.key === 'ArrowRight' && this.velX != -squareSize) {
+        this.velY = 0
+        this.velX = squareSize
       }
     })
   }
@@ -162,8 +157,8 @@ class snakeBodySquare extends Square {
     ctx.fillRect(this.x, this.y, this.size, this.size)
   }
   updatePosition() {
-    this.x += snake[snake.length - 1].velX
-    this.y += snake[snake.length - 1].velY
+    this.x += snake[0].velX
+    this.y += snake[0].velY
   }
 }
 
