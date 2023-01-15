@@ -7,6 +7,8 @@ const ctx = canvas.getContext('2d')
 const scoreCounter = document.querySelector('header p')
 let score = 0
 
+let velX = 10
+let velY = 0
 const squareSize = 10
 const fps = 10
 
@@ -30,27 +32,19 @@ class Square {
     this.y = y
   }
 
-  updatePosition() {
-    if (this.x < 0) {
-      this.x = 0
-      this.velX = 0
-      this.velY = 0
-    } else if (this.y < 0) {
-      this.y = 0
-      this.velX = 0
-      this.velY = 0
-    } else if (this.x >= width) {
-      this.x = width - this.size
-      this.velX = 0
-      this.velY = 0
-    } else if (this.y >= height) {
-      this.y = height - this.size
-      this.velX = 0
-      this.velY = 0
+  checkBounds() {
+    if (this.x < 0 || this.y < 0 || this.x >= width || this.y >= height) {
+      this.x = 250
+      this.y = 250
+      velX = 0
+      velY = 0
     }
+  }
 
-    this.x += this.velX
-    this.y += this.velY
+  draw() {
+    ctx.beginPath()
+    ctx.fillStyle = this.color
+    ctx.fillRect(this.x, this.y, this.size, this.size)
   }
 }
 
@@ -66,14 +60,8 @@ class foodSquare extends Square {
     this.exists = true
   }
 
-  draw() {
-    ctx.beginPath()
-    ctx.fillStyle = this.color
-    ctx.fillRect(this.x, this.y, this.size, this.size)
-  }
-
   collisionDetect() {
-    if (this.exists && this.x === snakeHead.x && this.y === snakeHead.y) {
+    if (this.exists && this.x === snake[0].x && this.y === snake[0].y) {
       this.exists = false
       const food = new foodSquare(
         random(0, width - squareSize),
@@ -85,80 +73,23 @@ class foodSquare extends Square {
       score++
       scoreCounter.textContent = score
 
-      const snakeBody = new snakeBodySquare()
+      const snakeBody = new snakeSquare(
+        snake[snake.length - 1].x - snake[snake.length - 1].velX,
+        snake[snake.length - 1].y - snake[snake.length - 1].velY
+      )
       snake.push(snakeBody)
     }
   }
 }
 
-class snakeHeadSquare extends Square {
+class snakeSquare extends Square {
   size
   color
-  velX
-  velY
 
   constructor(x, y) {
     super(x, y)
     this.size = squareSize
     this.color = 'green'
-    this.velX = 10
-    this.velY = 0
-
-    window.addEventListener('keydown', e => {
-      if (e.key === 'ArrowUp' && this.velY != squareSize) {
-        this.velY = -squareSize
-        this.velX = 0
-      } else if (e.key === 'ArrowDown' && this.velY != -squareSize) {
-        this.velY = squareSize
-        this.velX = 0
-      } else if (e.key === 'ArrowLeft' && this.velX != squareSize) {
-        this.velY = 0
-        this.velX = -squareSize
-      } else if (e.key === 'ArrowRight' && this.velX != -squareSize) {
-        this.velY = 0
-        this.velX = squareSize
-      }
-    })
-  }
-
-  draw() {
-    ctx.beginPath()
-    ctx.fillStyle = this.color
-    ctx.fillRect(this.x, this.y, this.size, this.size)
-  }
-
-  checkBounds() {
-    if (this.x < 0 || this.y < 0 || this.x >= width || this.y >= height) {
-      console.log('bateu')
-    }
-  }
-}
-
-class snakeBodySquare extends Square {
-  size
-  color
-  velX
-  velY
-
-  constructor() {
-    super(
-      snake[snake.length - 1].x - snake[snake.length - 1].velX,
-      snake[snake.length - 1].y - snake[snake.length - 1].velY
-    )
-    this.size = squareSize
-    this.color = 'green'
-    this.velX = snake[snake.length - 1].velX
-    this.velY = snake[snake.length - 1].velY
-  }
-
-  draw() {
-    ctx.beginPath()
-    ctx.fillStyle = this.color
-    ctx.fillRect(this.x, this.y, this.size, this.size)
-  }
-  updatePosition() {
-    this.x += snake[0].velX
-    this.y += snake[0].velY
   }
 }
 
@@ -167,8 +98,30 @@ let foods = [
 ]
 
 let snake = []
-const snakeHead = new snakeHeadSquare(250, 250)
+const snakeHead = new snakeSquare(250, 250)
 snake.push(snakeHead)
+
+function movingSnake() {
+  const newSnakeHead = new snakeSquare(snake[0].x + velX, snake[0].y + velY)
+  snake.unshift(newSnakeHead)
+  snake.pop()
+}
+
+window.addEventListener('keydown', e => {
+  if (e.key === 'ArrowUp' && velY != squareSize) {
+    velY = -squareSize
+    velX = 0
+  } else if (e.key === 'ArrowDown' && velY != -squareSize) {
+    velY = squareSize
+    velX = 0
+  } else if (e.key === 'ArrowLeft' && velX != squareSize) {
+    velY = 0
+    velX = -squareSize
+  } else if (e.key === 'ArrowRight' && velX != -squareSize) {
+    velY = 0
+    velX = squareSize
+  }
+})
 
 function loop() {
   // Painting the canvas white
@@ -189,9 +142,9 @@ function loop() {
 
   for (const part of snake) {
     part.draw()
-    part.updatePosition()
+    part.checkBounds()
   }
-  snakeHead.checkBounds()
+  movingSnake()
 
   setTimeout(() => {
     requestAnimationFrame(loop)
@@ -199,5 +152,3 @@ function loop() {
 }
 
 loop()
-
-// fazer com que o corpo da cobra siga a cabeça
