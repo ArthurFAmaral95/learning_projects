@@ -11,6 +11,7 @@ let velX = 10
 let velY = 0
 const squareSize = 10
 const fps = 10
+let collision = false
 
 // Function to generate random number
 function random(min, max) {
@@ -32,12 +33,15 @@ class Square {
     this.y = y
   }
 
-  checkBounds() {
-    if (this.x < 0 || this.y < 0 || this.x >= width || this.y >= height) {
-      this.x = 250
-      this.y = 250
-      velX = 0
-      velY = 0
+  collisionDetect() {
+    if (
+      this.x < 0 ||
+      this.y < 0 ||
+      this.x >= width ||
+      this.y >= height ||
+      (this != snake[0] && this.x === snake[0].x && this.y === snake[0].y)
+    ) {
+      collision = true
     }
   }
 
@@ -60,13 +64,25 @@ class foodSquare extends Square {
     this.exists = true
   }
 
-  collisionDetect() {
+  foodEat() {
     if (this.exists && this.x === snake[0].x && this.y === snake[0].y) {
       this.exists = false
-      const food = new foodSquare(
+      let food = new foodSquare(
         random(0, width - squareSize),
         random(0, height - squareSize)
       )
+
+      snake.forEach(function isFoodOnSnake(part) {
+        const foodIsOnSnake = part.x == food.x && part.y == food.y
+
+        if (foodIsOnSnake) {
+          food = new foodSquare(
+            random(0, width - squareSize),
+            random(0, height - squareSize)
+          )
+        }
+      })
+
       food.draw()
       foods.push(food)
 
@@ -97,11 +113,12 @@ let foods = [
   new foodSquare(random(0, width - squareSize), random(0, height - squareSize))
 ]
 
-let snake = []
-const snakeHead = new snakeSquare(250, 250)
-snake.push(snakeHead)
+let snake = [new snakeSquare(250, 250)]
 
 function movingSnake() {
+  if (collision) {
+    return
+  }
   const newSnakeHead = new snakeSquare(snake[0].x + velX, snake[0].y + velY)
   snake.unshift(newSnakeHead)
   snake.pop()
@@ -136,13 +153,13 @@ function loop() {
   for (const food of foods) {
     if (food.exists) {
       food.draw()
-      food.collisionDetect()
+      food.foodEat()
     }
   }
 
   for (const part of snake) {
     part.draw()
-    part.checkBounds()
+    part.collisionDetect()
   }
   movingSnake()
 
