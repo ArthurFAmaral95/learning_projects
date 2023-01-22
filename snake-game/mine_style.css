@@ -32,3 +32,17 @@ header, main {
   margin-block: 1rem;
 }
 
+.hidden {
+  display: none;
+}
+
+fieldset {
+  padding: 1rem;
+  font-size: 3rem;
+  display: flex;
+  flex-direction: column;
+}
+
+fieldset input {
+  margin-bottom: 1rem;
+}

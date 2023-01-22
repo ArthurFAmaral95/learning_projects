@@ -2,6 +2,8 @@ const canvas = document.querySelector('.myCanvas')
 const width = (canvas.width = 500)
 const height = (canvas.height = 500)
 
+const level = document.querySelector('fieldset')
+
 const ctx = canvas.getContext('2d')
 
 const scoreCounter = document.querySelector('header p')
@@ -10,7 +12,7 @@ let score = 0
 let velX = 10
 let velY = 0
 const squareSize = 10
-const fps = 10
+let fps
 let collision = false
 
 // Function to generate random number
@@ -168,4 +170,20 @@ function loop() {
   }, 1000 / fps)
 }
 
-loop()
+
+level.addEventListener('click', (e) => {
+  if (e.target.id === 'easy'){
+    fps = 5
+  } else if (e.target.id === 'medium') {
+    fps = 10
+  } else if (e.target.id === 'hard'){
+    fps = 20
+  }
+  
+  level.classList.add('hidden')
+  document.querySelector('header').classList.remove('hidden')
+  document.querySelector('main').classList.remove('hidden')
+
+  loop()
+
+})

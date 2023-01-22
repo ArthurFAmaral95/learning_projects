@@ -9,13 +9,25 @@
     <script src="./mine_main.js" defer></script>
   </head>
   <body>
-    <header>
+    <header class="hidden">
       <h1>Snake Game</h1>
       <h2>Score</h2>
       <p>0</p>
     </header>
-    <main>
+    <main class="hidden">
       <canvas class="myCanvas"> </canvas>
     </main>
+    <fieldset class="">
+      <legend>Select the level</legend>
+
+      <label for="">Easy</label>
+      <input type="radio" name="level" id="easy" />
+
+      <label for="">Medium</label>
+      <input type="radio" name="level" id="medium" />
+
+      <label for="">Hard</label>
+      <input type="radio" name="level" id="hard" />
+    </fieldset>
   </body>
 </html>
