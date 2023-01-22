@@ -3,6 +3,10 @@ const width = (canvas.width = 500)
 const height = (canvas.height = 500)
 
 const level = document.querySelector('fieldset')
+const header = document.querySelector('header')
+const main = document.querySelector('main')
+const end = document.querySelector('#end-message')
+const finalScore = document.querySelector('#end-message p')
 
 const ctx = canvas.getContext('2d')
 
@@ -44,6 +48,10 @@ class Square {
       (this != snake[0] && this.x === snake[0].x && this.y === snake[0].y)
     ) {
       collision = true
+      header.classList.add('hidden')
+      main.classList.add('hidden')
+      finalScore.textContent = `Your final score was ${score} points`
+      end.classList.remove('hidden')
     }
   }
 
@@ -181,8 +189,8 @@ level.addEventListener('click', (e) => {
   }
   
   level.classList.add('hidden')
-  document.querySelector('header').classList.remove('hidden')
-  document.querySelector('main').classList.remove('hidden')
+  header.classList.remove('hidden')
+  main.classList.remove('hidden')
 
   loop()
 

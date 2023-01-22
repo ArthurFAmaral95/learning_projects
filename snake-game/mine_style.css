@@ -46,3 +46,7 @@ fieldset {
 fieldset input {
   margin-bottom: 1rem;
 }
+
+#end-message h1 {
+  color: red;
+}
