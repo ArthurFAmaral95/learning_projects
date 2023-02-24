@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Issue Tracker</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./main.js" defer></script>
+    <script src="http://chancejs.com/chance.min.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>JS Issue Tracker</h1>
+    </header>
+    <main>
+      <form action="">
+        <fieldset id="new_issue">
+          <h2>Add New Issue</h2>
+          <div class="field">
+            <label for="description">Description</label>
+            <textarea
+              name="description"
+              id="description"
+              placeholder="Describe the issue..."
+              cols="50"
+              rows="5"
+              maxlength="150"
+              required
+            ></textarea>
+          </div>
+          <div class="field">
+            <label for="severity">Severity</label>
+            <select name="severity" id="severity">
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="responsible">Assigned to</label>
+            <input
+              type="text"
+              name="responsible"
+              id="responsible"
+              placeholder="Enter responsible..."
+              required
+            />
+          </div>
+        </fieldset>
+        <button type="submit" class="add">Add</button>
+      </form>
+
+      <section class="issue">
+        <p class="id">Issue ID</p>
+        <button class="open">Open</button>
+        <h2 class="description">Issue description</h2>
+        <div class="info">
+          <p class="severity">Severity</p>
+          <p class="responsible">Responsible</p>
+        </div>
+        <div class="buttons">
+          <button class="close">Close</button>
+          <button class="delete">Delete</button>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
