@@ -29,7 +29,8 @@ h1 {
   letter-spacing: 0.2rem;
 }
 
-form {
+form,
+.issue {
   padding: 2rem;
   background-color: ghostwhite;
   border-radius: 1rem;
@@ -61,9 +62,44 @@ form h2 {
 }
 
 .add {
+  background-color: blue;
+}
+
+.add,
+.open,
+.close,
+.delete {
   padding: 1rem;
   font-weight: bold;
-  background-color: blue;
   border-radius: 0.7rem;
   color: white;
+}
+
+.issue {
+  margin-block: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.open {
+  width: fit-content;
+  background-color: rgb(47, 137, 255);
+}
+
+.close {
+  background-color: orange;
+}
+
+.delete {
+  background-color: rgb(199, 9, 9);
+}
+
+.info {
+  display: flex;
+  gap: 2rem;
+}
+
+.id {
+  font-size: 1rem;
 }
