@@ -7,7 +7,7 @@ const id = document.querySelector('.id')
 const description = document.querySelector('.description')
 const severity = document.querySelector('.severity')
 const responsible = document.querySelector('.responsible')
-//const items = JSON.parse(localStorage.getItem('items')) || []
+//const data = JSON.parse(localStorage.getItem('issues')) || []
 
 let issues = []
 
@@ -32,13 +32,18 @@ function addNewIssue(e) {
     }
   })
 
-  populateStorage(issues)
+  populateStorage()
   this.reset()
-  console.log(localStorage.getItem('issues'))
 }
 
-function populateStorage(array) {
-  localStorage.setItem('issues', JSON.stringify(array))
+function populateStorage() {
+  localStorage.setItem('issues', JSON.stringify(issues))
+}
+
+function displayIssues(issues) {
+  for (const issue in issues) {
+    console.log(JSON.parse(issue))
+  }
 }
 
 form.addEventListener('submit', addNewIssue)
