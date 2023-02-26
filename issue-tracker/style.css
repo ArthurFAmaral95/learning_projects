@@ -20,6 +20,12 @@ body {
   padding: 1rem;
 }
 
+header,
+main {
+  max-width: 80vw;
+  margin-inline: auto;
+}
+
 button {
   cursor: pointer;
 }
@@ -59,6 +65,7 @@ form h2 {
 .field textarea,
 .field select {
   padding-block: 0.5rem;
+  max-width: calc(80vw - 4rem);
 }
 
 .add {
@@ -120,4 +127,8 @@ p.severity {
 
 .buttons button {
   width: 7.5rem;
+}
+
+.description {
+  overflow-wrap: break-word;
 }
