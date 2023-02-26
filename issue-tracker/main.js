@@ -6,6 +6,7 @@ const id = document.querySelector('.id')
 const description = document.querySelector('.description')
 const severity = document.querySelector('.severity')
 const responsible = document.querySelector('.responsible')
+const issueList = document.querySelector('.issue')
 
 const issues = JSON.parse(localStorage.getItem('issues')) || []
 
@@ -33,6 +34,7 @@ function addNewIssue(e) {
   })
 
   populateStorage(issues)
+  displayIssues(issues, issueList)
   this.reset()
 }
 
@@ -40,10 +42,28 @@ function populateStorage(array) {
   localStorage.setItem('issues', JSON.stringify(array))
 }
 
-function displayIssues(issues) {
-  for (const issue in issues) {
-    console.log(JSON.parse(issue))
-  }
+function displayIssues(array = [], section) {
+  section.innerHTML = array
+    .map(item => {
+      return `
+      <li>
+      <p class="id">Issue ID</p>
+      <button class="open">Open</button>
+      <h2 class="description">${item.inpDescription}</h2>
+      <div class="info">
+        <p class="severity">${item.option}</p>
+        <p class="responsible">${item.inpResponsible}</p>
+      </div>
+      <div class="buttons">
+        <button class="close">Close</button>
+        <button class="delete">Delete</button>
+      </div>
+    </li>
+    `
+    })
+    .join('')
 }
 
 form.addEventListener('submit', addNewIssue)
+
+displayIssues(issues, issueList)

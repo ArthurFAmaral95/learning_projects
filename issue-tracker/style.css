@@ -30,7 +30,7 @@ h1 {
 }
 
 form,
-.issue {
+li {
   padding: 2rem;
   background-color: ghostwhite;
   border-radius: 1rem;
@@ -77,9 +77,14 @@ form h2 {
 
 .issue {
   margin-block: 2rem;
+  list-style: none;
+}
+
+li {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  margin-block: 1rem;
 }
 
 .open {
@@ -97,9 +102,22 @@ form h2 {
 
 .info {
   display: flex;
-  gap: 2rem;
+  gap: 4rem;
 }
 
 .id {
   font-size: 1rem;
+}
+
+p.severity {
+  width: 5.5rem;
+}
+
+.buttons {
+  display: flex;
+  gap: 2rem;
+}
+
+.buttons button {
+  width: 7.5rem;
 }
