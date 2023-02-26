@@ -1,5 +1,4 @@
 const form = document.querySelector('form')
-//const add = document.querySelector('.add')
 const open = document.querySelector('.open')
 const close = document.querySelector('.close')
 const del = document.querySelector('.delete')
@@ -7,9 +6,8 @@ const id = document.querySelector('.id')
 const description = document.querySelector('.description')
 const severity = document.querySelector('.severity')
 const responsible = document.querySelector('.responsible')
-//const data = JSON.parse(localStorage.getItem('issues')) || []
 
-let issues = []
+const issues = JSON.parse(localStorage.getItem('issues')) || []
 
 function addNewIssue(e) {
   e.preventDefault()
@@ -24,20 +22,22 @@ function addNewIssue(e) {
       const inpResponsible = this.querySelector('input[id="responsible"]').value
       const option = opt.innerText
 
-      issues.push({
-        description: inpDescription,
-        severity: option,
-        responsible: inpResponsible
-      })
+      const issue = {
+        inpDescription,
+        option,
+        inpResponsible
+      }
+
+      issues.push(issue)
     }
   })
 
-  populateStorage()
+  populateStorage(issues)
   this.reset()
 }
 
-function populateStorage() {
-  localStorage.setItem('issues', JSON.stringify(issues))
+function populateStorage(array) {
+  localStorage.setItem('issues', JSON.stringify(array))
 }
 
 function displayIssues(issues) {
