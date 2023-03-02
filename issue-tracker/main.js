@@ -1,7 +1,7 @@
 const form = document.querySelector('form')
-const open = document.querySelector('.open')
-const close = document.querySelector('.close')
-const del = document.querySelector('.delete')
+const openBtn = document.querySelectorAll('.open')
+const closeBtn = document.querySelectorAll('.close')
+const delBtn = document.querySelectorAll('.delete')
 const id = document.querySelector('.id')
 const description = document.querySelector('.description')
 const severity = document.querySelector('.severity')
@@ -44,10 +44,10 @@ function populateStorage(array) {
 
 function displayIssues(array = [], section) {
   section.innerHTML = array
-    .map(item => {
+    .map((item, i) => {
       return `
-      <li>
-      <p class="id">Issue ID</p>
+      <li data-index=${i}>
+      <p class="id" id="${i}">Issue ID: ${i}</p>
       <button class="open">Open</button>
       <h2 class="description">${item.inpDescription}</h2>
       <div class="info">
@@ -55,8 +55,8 @@ function displayIssues(array = [], section) {
         <p class="responsible">${item.inpResponsible}</p>
       </div>
       <div class="buttons">
-        <button class="close">Close</button>
-        <button class="delete">Delete</button>
+        <button class="close" data-index=${i}>Close</button>
+        <button class="delete" data-index=${i}>Delete</button>
       </div>
     </li>
     `
@@ -64,6 +64,18 @@ function displayIssues(array = [], section) {
     .join('')
 }
 
+//function removeIssue(array = [], section) {}
+
+function handleClick(e) {
+  if (e.target.classList.contains('delete')) {
+    const index = parseFloat(e.target.dataset.index)
+    issues.splice(index, 1)
+    console.log(issues)
+  }
+}
+
 form.addEventListener('submit', addNewIssue)
+
+issueList.addEventListener('click', handleClick)
 
 displayIssues(issues, issueList)
