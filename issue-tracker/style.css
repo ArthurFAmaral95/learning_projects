@@ -132,3 +132,8 @@ p.severity {
 .description {
   overflow-wrap: break-word;
 }
+
+
+.hidden{
+  display: none;
+}

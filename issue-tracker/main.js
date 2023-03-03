@@ -26,7 +26,8 @@ function addNewIssue(e) {
       const issue = {
         inpDescription,
         option,
-        inpResponsible
+        inpResponsible,
+        visible: true
       }
 
       issues.push(issue)
@@ -46,7 +47,7 @@ function displayIssues(array = [], section) {
   section.innerHTML = array
     .map((item, i) => {
       return `
-      <li data-index=${i}>
+      <li data-index=${i} class="${item.visible ? '' : 'hidden'}">
       <p class="id" id="${i}">Issue ID: ${i}</p>
       <button class="open">Open</button>
       <h2 class="description">${item.inpDescription}</h2>
@@ -69,8 +70,9 @@ function displayIssues(array = [], section) {
 function handleClick(e) {
   if (e.target.classList.contains('delete')) {
     const index = parseFloat(e.target.dataset.index)
-    issues.splice(index, 1)
-    console.log(issues)
+    issues[index].visible = !issues[index].visible
+    populateStorage(issues)
+    displayIssues(issues, issueList)
   }
 }
 
