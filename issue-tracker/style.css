@@ -69,14 +69,14 @@ form h2 {
   max-width: calc(80vw - 4rem);
 }
 
-.add {
+.addBtn {
   background-color: blue;
 }
 
-.add,
-.open,
-.close,
-.delete {
+.addBtn,
+.openBtn,
+.closeBtn,
+.deleteBtn {
   padding: 1rem;
   font-family: 'Shantell Sans', cursive, sans-serif;
   font-weight: bold;
@@ -96,16 +96,16 @@ li {
   margin-block: 1rem;
 }
 
-.open {
+.openBtn {
   width: fit-content;
   background-color: rgb(47, 137, 255);
 }
 
-.close {
+.closeBtn {
   background-color: orange;
 }
 
-.delete {
+.deleteBtn {
   background-color: rgb(199, 9, 9);
 }
 
@@ -137,10 +137,29 @@ p.severity {
 
 .description,
 .info,
+.status,
 fieldset {
   font-family: 'Roboto Mono', monospace, sans-serif;
 }
 
 .hidden {
   display: none;
+}
+
+.status{
+  font-size: 1.2rem;
+}
+
+.status span{
+  text-transform: capitalize;
+}
+
+.status span.open{
+  color: green;
+  font-weight: bold;
+}
+
+.status span.closed{
+  color: red;
+  font-weight: bold;
 }

@@ -1,11 +1,4 @@
 const form = document.querySelector('form')
-const openBtn = document.querySelectorAll('.open')
-const closeBtn = document.querySelectorAll('.close')
-const delBtn = document.querySelectorAll('.delete')
-const id = document.querySelector('.id')
-const description = document.querySelector('.description')
-const severity = document.querySelector('.severity')
-const responsible = document.querySelector('.responsible')
 const issueList = document.querySelector('.issue')
 
 const issues = JSON.parse(localStorage.getItem('issues')) || []
@@ -27,7 +20,8 @@ function addNewIssue(e) {
         inpDescription,
         option,
         inpResponsible,
-        visible: true
+        visible: true,
+        status: 'open'
       }
 
       issues.push(issue)
@@ -49,15 +43,18 @@ function displayIssues(array = [], section) {
       return `
       <li data-index=${i} class="${item.visible ? '' : 'hidden'}">
       <p class="id" id="${i}">Issue ID: ${i}</p>
-      <button class="open">Open</button>
+      <p class="status">Status: <span class="${item.status}">${
+        item.status
+      }</span> </p>
       <h2 class="description">${item.inpDescription}</h2>
       <div class="info">
-        <p class="severity">${item.option}</p>
-        <p class="responsible">${item.inpResponsible}</p>
+      <p class="severity">${item.option}</p>
+      <p class="responsible">${item.inpResponsible}</p>
       </div>
       <div class="buttons">
-        <button class="close" data-index=${i}>Close</button>
-        <button class="delete" data-index=${i}>Delete</button>
+        <button class="openBtn" data-index=${i}>Open</button>
+        <button class="closeBtn" data-index=${i}>Close</button>
+        <button class="deleteBtn" data-index=${i}>Delete</button>
       </div>
     </li>
     `
@@ -65,15 +62,17 @@ function displayIssues(array = [], section) {
     .join('')
 }
 
-//function removeIssue(array = [], section) {}
-
 function handleClick(e) {
-  if (e.target.classList.contains('delete')) {
-    const index = parseFloat(e.target.dataset.index)
+  const index = parseFloat(e.target.dataset.index)
+  if (e.target.classList.contains('deleteBtn')) {
     issues[index].visible = !issues[index].visible
-    populateStorage(issues)
-    displayIssues(issues, issueList)
+  } else if (e.target.classList.contains('openBtn')) {
+    issues[index].status = 'open'
+  } else if (e.target.classList.contains('closeBtn')) {
+    issues[index].status = 'closed'
   }
+  populateStorage(issues)
+  displayIssues(issues, issueList)
 }
 
 form.addEventListener('submit', addNewIssue)
