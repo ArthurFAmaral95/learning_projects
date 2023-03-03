@@ -1,9 +1,9 @@
 const form = document.querySelector('form')
-const issueList = document.querySelector('.issue')
+const taskList = document.querySelector('.tasks')
 
-const issues = JSON.parse(localStorage.getItem('issues')) || []
+const tasks = JSON.parse(localStorage.getItem('tasks')) || []
 
-function addNewIssue(e) {
+function addNewTask(e) {
   e.preventDefault()
 
   const options = this.querySelectorAll('option')
@@ -16,39 +16,39 @@ function addNewIssue(e) {
       const inpResponsible = this.querySelector('input[id="responsible"]').value
       const option = opt.innerText
 
-      const issue = {
+      const task = {
         inpDescription,
         option,
         inpResponsible,
         visible: true,
-        status: 'open'
+        status: 'pending'
       }
 
-      issues.push(issue)
+      tasks.push(task)
     }
   })
 
-  populateStorage(issues)
-  displayIssues(issues, issueList)
+  populateStorage(tasks)
+  displayTasks(tasks, taskList)
   this.reset()
 }
 
 function populateStorage(array) {
-  localStorage.setItem('issues', JSON.stringify(array))
+  localStorage.setItem('tasks', JSON.stringify(array))
 }
 
-function displayIssues(array = [], section) {
+function displayTasks(array = [], section) {
   section.innerHTML = array
     .map((item, i) => {
       return `
       <li data-index=${i} class="${item.visible ? '' : 'hidden'}">
-      <p class="id" id="${i}">Issue ID: ${i}</p>
+      <p class="id" id="${i}">Task ID: ${i}</p>
       <p class="status">Status: <span class="${item.status}">${
         item.status
       }</span> </p>
       <h2 class="description">${item.inpDescription}</h2>
       <div class="info">
-      <p class="severity">${item.option}</p>
+      <p class="priority">${item.option}</p>
       <p class="responsible">${item.inpResponsible}</p>
       </div>
       <div class="buttons">
@@ -65,18 +65,18 @@ function displayIssues(array = [], section) {
 function handleClick(e) {
   const index = parseFloat(e.target.dataset.index)
   if (e.target.classList.contains('deleteBtn')) {
-    issues[index].visible = !issues[index].visible
+    tasks[index].visible = !tasks[index].visible
   } else if (e.target.classList.contains('openBtn')) {
-    issues[index].status = 'open'
+    tasks[index].status = 'pending'
   } else if (e.target.classList.contains('closeBtn')) {
-    issues[index].status = 'closed'
+    tasks[index].status = 'done'
   }
-  populateStorage(issues)
-  displayIssues(issues, issueList)
+  populateStorage(tasks)
+  displayTasks(tasks, taskList)
 }
 
-form.addEventListener('submit', addNewIssue)
+form.addEventListener('submit', addNewTask)
 
-issueList.addEventListener('click', handleClick)
+taskList.addEventListener('click', handleClick)
 
-displayIssues(issues, issueList)
+displayTasks(tasks, taskList)
