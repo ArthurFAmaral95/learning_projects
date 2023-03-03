@@ -33,6 +33,7 @@ button {
 h1 {
   padding: 1rem;
   letter-spacing: 0.2rem;
+  font-family: 'Tilt Prism', cursive, sans-serif;
 }
 
 form,
@@ -77,6 +78,7 @@ form h2 {
 .close,
 .delete {
   padding: 1rem;
+  font-family: 'Shantell Sans', cursive, sans-serif;
   font-weight: bold;
   border-radius: 0.7rem;
   color: white;
@@ -133,7 +135,12 @@ p.severity {
   overflow-wrap: break-word;
 }
 
+.description,
+.info,
+fieldset {
+  font-family: 'Roboto Mono', monospace, sans-serif;
+}
 
-.hidden{
+.hidden {
   display: none;
 }
