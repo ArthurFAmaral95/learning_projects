@@ -1,3 +1,5 @@
+/*GENERAL*/
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -26,18 +28,86 @@ main {
   margin-inline: auto;
 }
 
-button {
-  cursor: pointer;
-}
-
 h1 {
   padding: 1rem;
   letter-spacing: 0.2rem;
   font-family: 'Tilt Prism', cursive, sans-serif;
 }
 
+/*BUTTONS*/
+
+button {
+  cursor: pointer;
+}
+
+.addBtn {
+  background-color: rgb(0, 0, 255);
+}
+
+.addBtn:hover {
+  background-color: rgba(0, 0, 255, 0.5);
+}
+
+.addBtn,
+.openBtn,
+.closeBtn,
+.deleteBtn {
+  padding: 1rem;
+  font-family: 'Shantell Sans', cursive, sans-serif;
+  font-weight: bold;
+  border-radius: 0.7rem;
+  color: white;
+}
+
+.openBtn {
+  background-color: rgb(47, 137, 255);
+}
+
+.openBtn:hover {
+  background-color: rgba(47, 137, 255, 0.5);
+}
+
+.closeBtn {
+  background-color: rgb(255, 165, 0);
+}
+
+.closeBtn:hover {
+  background-color: rgba(255, 165, 0, 0.5);
+}
+
+.deleteBtn {
+  background-color: rgb(199, 9, 9);
+}
+
+.deleteBtn:hover {
+  background-color: rgba(199, 9, 9, 0.5);
+}
+
+.buttons {
+  display: flex;
+  gap: 2rem;
+}
+
+.buttons button {
+  width: 7.5rem;
+}
+
+.sort button {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.sort button.selected {
+  font-weight: bold;
+  color: white;
+  background-color: black;
+}
+
+/*FORM*/
+
 form,
-li {
+li,
+nav {
   padding: 2rem;
   background-color: ghostwhite;
   border-radius: 1rem;
@@ -69,24 +139,21 @@ form h2 {
   max-width: calc(80vw - 4rem);
 }
 
-.addBtn {
-  background-color: rgb(0, 0, 255);
+/*NAV*/
+
+nav {
+  margin-block: 2rem;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.addBtn:hover {
-  background-color: rgba(0, 0, 255, 0.5);
+nav h2 {
+  margin-bottom: 1rem;
 }
 
-.addBtn,
-.openBtn,
-.closeBtn,
-.deleteBtn {
-  padding: 1rem;
-  font-family: 'Shantell Sans', cursive, sans-serif;
-  font-weight: bold;
-  border-radius: 0.7rem;
-  color: white;
-}
+/*TASKS*/
 
 .tasks {
   margin-block: 2rem;
@@ -98,30 +165,6 @@ li {
   flex-direction: column;
   gap: 1rem;
   margin-block: 1rem;
-}
-
-.openBtn {
-  background-color: rgb(47, 137, 255);
-}
-
-.openBtn:hover {
-  background-color: rgba(47, 137, 255, 0.5);
-}
-
-.closeBtn {
-  background-color: rgb(255, 165, 0);
-}
-
-.closeBtn:hover {
-  background-color: rgba(255, 165, 0, 0.5);
-}
-
-.deleteBtn {
-  background-color: rgb(199, 9, 9);
-}
-
-.deleteBtn:hover {
-  background-color: rgba(199, 9, 9, 0.5);
 }
 
 .info {
@@ -137,15 +180,6 @@ p.priority {
   width: 5.5rem;
 }
 
-.buttons {
-  display: flex;
-  gap: 2rem;
-}
-
-.buttons button {
-  width: 7.5rem;
-}
-
 .description {
   overflow-wrap: break-word;
 }
@@ -153,7 +187,8 @@ p.priority {
 .description,
 .info,
 .status,
-fieldset {
+fieldset,
+nav {
   font-family: 'Roboto Mono', monospace, sans-serif;
 }
 

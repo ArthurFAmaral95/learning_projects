@@ -1,5 +1,6 @@
 const form = document.querySelector('form')
 const taskList = document.querySelector('.tasks')
+const sortBtns = document.querySelectorAll('.sort button')
 
 const tasks = JSON.parse(localStorage.getItem('tasks')) || []
 
@@ -75,8 +76,24 @@ function handleClick(e) {
   displayTasks(tasks, taskList)
 }
 
+function sortList() {
+  const high = document.querySelector('.sort button#high')
+  const low = document.querySelector('.sort button#low')
+
+  if (high.classList.value === '' && low.classList.value === '') {
+    this.classList.toggle('selected')
+  } else if (this.classList.value === 'selected') {
+    this.classList.toggle('selected')
+  } else {
+    high.classList.toggle('selected')
+    low.classList.toggle('selected')
+  }
+}
+
 form.addEventListener('submit', addNewTask)
 
 taskList.addEventListener('click', handleClick)
+
+sortBtns.forEach(button => button.addEventListener('click', sortList))
 
 displayTasks(tasks, taskList)

@@ -58,6 +58,36 @@
         <button type="submit" class="addBtn">Add</button>
       </form>
 
+      <nav>
+        <div class="sort">
+          <h2>Sort</h2>
+          <button id="high" class="">Higher to Lower</button>
+          <button id="low" class="">Lower to Higher</button>
+        </div>
+        <div class="filter">
+          <h2>Filter</h2>
+          <div class="filters">
+            <label for="priority_filter">Severity</label>
+            <select name="priority_filter" id="priority_filter">
+              <option value=""></option>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+            <label for="status_filter">Status</label>
+            <select name="status_filter" id="status_filter">
+              <option value=""></option>
+              <option value="pending">Pending</option>
+              <option value="done">Done</option>
+            </select>
+            <label for="responsible_filter">Responsible</label>
+            <select name="responsible_filter" id="responsible_filter">
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+      </nav>
+
       <ul class="tasks"></ul>
     </main>
   </body>
