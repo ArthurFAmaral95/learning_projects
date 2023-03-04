@@ -42,10 +42,14 @@ function populateStorage(array) {
 
 function displayTasks(array = [], section) {
   section.innerHTML = array
-    .map((item, i) => {
+    .map(item => {
       return `
-      <li data-index=${i} class="${item.visible ? '' : 'hidden'}">
-      <p class="id" id="${i}">Task ID: ${i}</p>
+      <li data-index=${array.indexOf(item)} class="${
+        item.visible ? '' : 'hidden'
+      }">
+      <p class="id" id="${array.indexOf(item)}">Task ID: ${array.indexOf(
+        item
+      )}</p>
       <p class="status">Status: <span class="${item.status}">${
         item.status
       }</span> </p>
@@ -55,9 +59,13 @@ function displayTasks(array = [], section) {
       <p class="responsible">${item.inpResponsible}</p>
       </div>
       <div class="buttons">
-        <button class="openBtn" data-index=${i}>Open</button>
-        <button class="closeBtn" data-index=${i}>Close</button>
-        <button class="deleteBtn" data-index=${i}>Delete</button>
+        <button class="openBtn" data-index=${array.indexOf(item)}>Open</button>
+        <button class="closeBtn" data-index=${array.indexOf(
+          item
+        )}>Close</button>
+        <button class="deleteBtn" data-index=${array.indexOf(
+          item
+        )}>Delete</button>
       </div>
     </li>
     `
