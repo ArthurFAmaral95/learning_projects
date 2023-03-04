@@ -16,10 +16,12 @@ function addNewTask(e) {
       ).value
       const inpResponsible = this.querySelector('input[id="responsible"]').value
       const option = opt.innerText
+      const optLevel = opt.value
 
       const task = {
         inpDescription,
         option,
+        optLevel,
         inpResponsible,
         visible: true,
         status: 'pending'
@@ -87,6 +89,16 @@ function sortList() {
   } else {
     high.classList.toggle('selected')
     low.classList.toggle('selected')
+  }
+
+  if (high.classList.value === 'selected') {
+    const ordered = tasks.sort((a, b) => (a.optLevel > b.optLevel ? 1 : -1))
+
+    displayTasks(ordered, taskList)
+  } else if (low.classList.value === 'selected') {
+    const ordered = tasks.sort((a, b) => (a.optLevel > b.optLevel ? -1 : 1))
+
+    displayTasks(ordered, taskList)
   }
 }
 
