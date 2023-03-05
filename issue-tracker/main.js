@@ -1,7 +1,9 @@
 const form = document.querySelector('form')
 const taskList = document.querySelector('.tasks')
 const sortBtns = document.querySelectorAll('.sort button')
-
+const filters = document.querySelectorAll('.filters')
+const responsibleList = document.querySelector('.responsible_filter')
+let filteredTasks = []
 const tasks = JSON.parse(localStorage.getItem('tasks')) || []
 
 function addNewTask(e) {
@@ -35,6 +37,7 @@ function addNewTask(e) {
 
   populateStorage(tasks)
   displayTasks(tasks, taskList)
+  fillResponsibleFilter(tasks, responsibleList)
   this.reset()
 }
 
@@ -108,10 +111,55 @@ function sortList() {
   }
 }
 
+function filterList(e) {
+  const filterValue = e.target.value
+
+  if (filterValue === 'high') {
+    filteredTasks = tasks.filter(task => task.optLevel === '1')
+  } else if (filterValue === 'medium') {
+    filteredTasks = tasks.filter(task => task.optLevel === '2')
+  } else if (filterValue === 'low') {
+    filteredTasks = tasks.filter(task => task.optLevel === '3')
+  } else if (filterValue === 'pending') {
+    filteredTasks = tasks.filter(task => task.status === 'pending')
+  } else if (filterValue === 'done') {
+    filteredTasks = tasks.filter(task => task.status === 'done')
+  } else if (filterValue === '') {
+    filteredTasks = tasks
+  } else if (e.target.name === 'responsible_filter') {
+    filteredTasks = tasks.filter(task => task.inpResponsible === filterValue)
+  }
+
+  displayTasks(filteredTasks, taskList)
+}
+
+function fillResponsibleFilter(array = [], section) {
+  const allResponsibles = ['']
+
+  const addedResponsibles = array.map(item => {
+    return allResponsibles.push(item.inpResponsible)
+  })
+
+  const singleResponsibles = [...new Set(allResponsibles)]
+
+  const html = singleResponsibles
+    .map(item => {
+      return `
+      <option value="${item}">${item}</option>
+      `
+    })
+    .join('')
+
+  section.innerHTML = html
+}
+
 form.addEventListener('submit', addNewTask)
 
 taskList.addEventListener('click', handleClick)
 
 sortBtns.forEach(button => button.addEventListener('click', sortList))
 
+filters.forEach(filter => filter.addEventListener('input', filterList))
+
 displayTasks(tasks, taskList)
+fillResponsibleFilter(tasks, responsibleList)
