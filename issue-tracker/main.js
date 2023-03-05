@@ -17,6 +17,7 @@ function addNewTask(e) {
       const inpResponsible = this.querySelector('input[id="responsible"]').value
       const option = opt.innerText
       const optLevel = opt.value
+      const taskID = tasks.length + 1
 
       const task = {
         inpDescription,
@@ -24,7 +25,8 @@ function addNewTask(e) {
         optLevel,
         inpResponsible,
         visible: true,
-        status: 'pending'
+        status: 'pending',
+        taskID
       }
 
       tasks.push(task)
@@ -42,14 +44,10 @@ function populateStorage(array) {
 
 function displayTasks(array = [], section) {
   section.innerHTML = array
-    .map(item => {
+    .map((item, i) => {
       return `
-      <li data-index=${array.indexOf(item)} class="${
-        item.visible ? '' : 'hidden'
-      }">
-      <p class="id" id="${array.indexOf(item)}">Task ID: ${array.indexOf(
-        item
-      )}</p>
+      <li data-index=${i} class="${item.visible ? '' : 'hidden'}">
+      <p class="id" id="${item.taskID}">Task ID: ${item.taskID}</p>
       <p class="status">Status: <span class="${item.status}">${
         item.status
       }</span> </p>
@@ -59,13 +57,9 @@ function displayTasks(array = [], section) {
       <p class="responsible">${item.inpResponsible}</p>
       </div>
       <div class="buttons">
-        <button class="openBtn" data-index=${array.indexOf(item)}>Open</button>
-        <button class="closeBtn" data-index=${array.indexOf(
-          item
-        )}>Close</button>
-        <button class="deleteBtn" data-index=${array.indexOf(
-          item
-        )}>Delete</button>
+        <button class="openBtn" data-index=${i}>Open</button>
+        <button class="closeBtn" data-index=${i}>Close</button>
+        <button class="deleteBtn" data-index=${i}>Delete</button>
       </div>
     </li>
     `
@@ -105,6 +99,10 @@ function sortList() {
     displayTasks(ordered, taskList)
   } else if (low.classList.value === 'selected') {
     const ordered = tasks.sort((a, b) => (a.optLevel > b.optLevel ? -1 : 1))
+
+    displayTasks(ordered, taskList)
+  } else {
+    const ordered = tasks.sort((a, b) => (a.taskID > b.taskID ? 1 : -1))
 
     displayTasks(ordered, taskList)
   }
