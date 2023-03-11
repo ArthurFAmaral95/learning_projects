@@ -1,12 +1,17 @@
 const form = document.querySelector('form')
 const taskList = document.querySelector('.tasks')
+const sort = document.querySelector('.sort')
 const sortBtns = document.querySelectorAll('.sort button')
+const high = document.querySelector('.sort button#high')
+const low = document.querySelector('.sort button#low')
 const filters = document.querySelectorAll('.filters')
 const responsibleList = document.querySelector('.responsible_filter')
 let filteredTasks = []
 const tasks = JSON.parse(localStorage.getItem('tasks')) || []
 
 const priorityFilter = document.querySelector('#priority_filter')
+const statusFilter = document.querySelector('#status_filter')
+const responsibleFilter = document.querySelector('#responsible_filter')
 
 function addNewTask(e) {
   e.preventDefault()
@@ -49,9 +54,9 @@ function populateStorage(array) {
 
 function displayTasks(array = [], section) {
   section.innerHTML = array
-    .map((item, i) => {
+    .map(item => {
       return `
-      <li data-index=${i} class="${item.visible ? '' : 'hidden'}">
+      <li data-index=${item.taskID} class="${item.visible ? '' : 'hidden'}">
       <p class="id" id="${item.taskID}">Task ID: ${item.taskID}</p>
       <p class="status">Status: <span class="${item.status}">${
         item.status
@@ -62,9 +67,9 @@ function displayTasks(array = [], section) {
       <p class="responsible">${item.inpResponsible}</p>
       </div>
       <div class="buttons">
-        <button class="openBtn" data-index=${i}>Open</button>
-        <button class="closeBtn" data-index=${i}>Close</button>
-        <button class="deleteBtn" data-index=${i}>Delete</button>
+        <button class="openBtn" data-index=${item.taskID}>Open</button>
+        <button class="closeBtn" data-index=${item.taskID}>Close</button>
+        <button class="deleteBtn" data-index=${item.taskID}>Delete</button>
       </div>
     </li>
     `
@@ -73,7 +78,7 @@ function displayTasks(array = [], section) {
 }
 
 function handleClick(e) {
-  const index = parseFloat(e.target.dataset.index)
+  const index = parseFloat(e.target.dataset.index) - 1
   if (e.target.classList.contains('deleteBtn')) {
     tasks[index].visible = !tasks[index].visible
   } else if (e.target.classList.contains('openBtn')) {
@@ -81,13 +86,15 @@ function handleClick(e) {
   } else if (e.target.classList.contains('closeBtn')) {
     tasks[index].status = 'done'
   }
+
   populateStorage(tasks)
-  displayTasks(tasks, taskList)
+  displayTasks(filteredTasks, taskList)
 }
 
-function sortList() {
-  const high = document.querySelector('.sort button#high')
-  const low = document.querySelector('.sort button#low')
+function sortList(e) {
+  sort.classList.remove('high')
+  sort.classList.remove('low')
+  sort.classList.add(e.target.id)
 
   if (high.classList.value === '' && low.classList.value === '') {
     this.classList.toggle('selected')
@@ -99,37 +106,79 @@ function sortList() {
   }
 
   if (high.classList.value === 'selected') {
-    const ordered = tasks.sort((a, b) => (a.optLevel > b.optLevel ? 1 : -1))
+    const ordered = filteredTasks.sort((a, b) =>
+      a.optLevel > b.optLevel ? 1 : -1
+    )
 
     displayTasks(ordered, taskList)
   } else if (low.classList.value === 'selected') {
-    const ordered = tasks.sort((a, b) => (a.optLevel > b.optLevel ? -1 : 1))
+    const ordered = filteredTasks.sort((a, b) =>
+      a.optLevel > b.optLevel ? -1 : 1
+    )
 
     displayTasks(ordered, taskList)
   } else {
-    const ordered = tasks.sort((a, b) => (a.taskID > b.taskID ? 1 : -1))
+    const ordered = filteredTasks.sort((a, b) => (a.taskID > b.taskID ? 1 : -1))
 
     displayTasks(ordered, taskList)
   }
 }
 
-function filterList(e) {
-  const filterValue = e.target.value
+function filterList() {
+  const selectedFilters = {
+    priority: priorityFilter.value,
+    status: statusFilter.value,
+    responsible: responsibleFilter.value,
+    sort: sort.classList[1]
+  }
 
-  if (filterValue === 'high') {
-    filteredTasks = tasks.filter(task => task.optLevel === '1')
-  } else if (filterValue === 'medium') {
-    filteredTasks = tasks.filter(task => task.optLevel === '2')
-  } else if (filterValue === 'low') {
-    filteredTasks = tasks.filter(task => task.optLevel === '3')
-  } else if (filterValue === 'pending') {
-    filteredTasks = tasks.filter(task => task.status === 'pending')
-  } else if (filterValue === 'done') {
-    filteredTasks = tasks.filter(task => task.status === 'done')
-  } else if (e.target.name === 'responsible_filter') {
-    filteredTasks = tasks.filter(task => task.inpResponsible === filterValue)
-  } else if (filterValue === '') {
+  if (
+    selectedFilters.status === '' &&
+    selectedFilters.responsible === '' &&
+    selectedFilters.priority === ''
+  ) {
     filteredTasks = tasks
+  } else if (
+    selectedFilters.status === '' &&
+    selectedFilters.responsible === ''
+  ) {
+    filteredTasks = tasks.filter(
+      task => task.option.toLowerCase() === selectedFilters.priority
+    )
+  } else if (
+    selectedFilters.priority === '' &&
+    selectedFilters.responsible === ''
+  ) {
+    filteredTasks = tasks.filter(task => task.status === selectedFilters.status)
+  } else if (selectedFilters.status === '' && selectedFilters.priority === '') {
+    filteredTasks = tasks.filter(
+      task => task.inpResponsible === selectedFilters.responsible
+    )
+  } else if (selectedFilters.responsible === '') {
+    filteredTasks = tasks.filter(
+      task =>
+        task.option.toLowerCase() === selectedFilters.priority &&
+        task.status === selectedFilters.status
+    )
+  } else if (selectedFilters.status === '') {
+    filteredTasks = tasks.filter(
+      task =>
+        task.option.toLowerCase() === selectedFilters.priority &&
+        task.inpResponsible === selectedFilters.responsible
+    )
+  } else if (selectedFilters.priority === '') {
+    filteredTasks = tasks.filter(
+      task =>
+        task.inpResponsible === selectedFilters.responsible &&
+        task.status === selectedFilters.status
+    )
+  } else {
+    filteredTasks = tasks.filter(
+      task =>
+        task.option.toLowerCase() === selectedFilters.priority &&
+        task.status === selectedFilters.status &&
+        task.inpResponsible === selectedFilters.responsible
+    )
   }
 
   displayTasks(filteredTasks, taskList)
