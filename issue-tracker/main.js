@@ -6,6 +6,8 @@ const responsibleList = document.querySelector('.responsible_filter')
 let filteredTasks = []
 const tasks = JSON.parse(localStorage.getItem('tasks')) || []
 
+const priorityFilter = document.querySelector('#priority_filter')
+
 function addNewTask(e) {
   e.preventDefault()
 
@@ -124,10 +126,10 @@ function filterList(e) {
     filteredTasks = tasks.filter(task => task.status === 'pending')
   } else if (filterValue === 'done') {
     filteredTasks = tasks.filter(task => task.status === 'done')
-  } else if (filterValue === '') {
-    filteredTasks = tasks
   } else if (e.target.name === 'responsible_filter') {
     filteredTasks = tasks.filter(task => task.inpResponsible === filterValue)
+  } else if (filterValue === '') {
+    filteredTasks = tasks
   }
 
   displayTasks(filteredTasks, taskList)
